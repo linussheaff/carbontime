@@ -5,8 +5,9 @@ use std::io::ErrorKind;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Types of RAPL files available
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub enum RaplType{
+    #[default]
     Package, // measures CPU
     Dram, // measures RAM
     Psys, // measures entire system on chip
@@ -24,7 +25,7 @@ pub struct RaplReader {
     domains: Vec<RaplDomain>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct RaplSnapshot {
     pub readings: Vec<(RaplType, u64)>,
     pub timestamp_ns: u64,
@@ -107,7 +108,7 @@ impl RaplReader {
         let energy_path = path.join("energy_uj");
         let max_path = path.join("max_energy_range_uj");
 
-        // If the main energy file is missing/unreadable, do nothing for now todo
+        // If the main energy file is missing/unreadable, do nothing for now todo handle
         if !energy_path.exists() {
             return None;
         }

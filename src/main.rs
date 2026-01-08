@@ -1,5 +1,7 @@
 mod runner;
 mod rapl;
+mod monitor;
+mod nvml;
 
 use clap::Parser;
 use crate::rapl::RaplReader;
