@@ -1,5 +1,5 @@
 use nvml_wrapper::Nvml;
-use anyhow::{Result, Context};
+use anyhow::{Result};
 
 pub struct NvmlReader{
     nvml: Nvml,

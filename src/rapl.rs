@@ -5,7 +5,7 @@ use std::io::ErrorKind;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Types of RAPL files available
-#[derive(Debug, Clone, PartialEq, Default)]
+#[derive(Debug, Clone, PartialEq, Default, Ord, Eq, PartialOrd)]
 pub enum RaplType{
     #[default]
     Package, // measures CPU
@@ -35,7 +35,7 @@ impl RaplReader {
     /// Public entry point: Discover and initialise all RAPL domains
     pub fn new() -> Result<Option<Self>> {
         // Call the internal scanner. If it fails (PermissionDenied), we return the error.
-        let domains = Self::scan().context("Failed to scan RAPL directories")?;
+        let domains = Self::scan()?;
 
         if domains.is_empty() {
             Ok(None) // No RAPL found
@@ -166,9 +166,10 @@ impl RaplReader {
         let mut readings = Vec::with_capacity(self.domains.len());
 
         for domain in &self.domains {
-            let energy_str = fs::read_to_string(&domain.path)
-                .with_context(|| format!("Failed to read RAPL energy from '{:?}'", domain.path))?;
+            let energy_str = fs::read_to_string(&domain.path)?;
 
+            // let energy_str = fs::read_to_string(&domain.path)
+                // .with_context(|| format!("Failed to read RAPL energy from '{:?}'", domain.path))?;
             let energy_uj = energy_str.trim().parse::<u64>()
                 .with_context(|| format!("Failed to parse energy uj '{}'", energy_str))?;
 
