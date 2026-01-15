@@ -7,16 +7,12 @@
 //!   carbontime --region uk cargo build --release
 //!   carbontime --json ./my_script.sh
 
-mod carbon;
-mod monitor;
-mod nvml;
-mod rapl;
-mod report;
-mod runner;
+
 
 use anyhow::{bail, Result};
 use clap::Parser;
 use std::time::Duration;
+use carbontime::{carbon, monitor, report, runner};
 
 /// Measure energy consumption and estimate carbon emissions of any command
 #[derive(Parser, Debug)]

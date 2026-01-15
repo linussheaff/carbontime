@@ -27,7 +27,6 @@ impl EnergyMeasurement {
                 .filter(|(domain, _)| *domain == *top_domain)
                 .map(|(_, uj)| uj)
                 .sum();
-            println!("{}", total);
             if total != 0{
                 return total;
             }

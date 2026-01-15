@@ -49,7 +49,7 @@ impl RaplReader {
         let rapl_path = Path::new("/sys/class/powercap/intel-rapl");
 
         if !rapl_path.exists() {
-            return Ok(Vec::new()); // Return empty vector, don't crash todo handle
+            return Ok(Vec::new()); // Return empty vector, don't crash
         }
 
         let mut domains = Vec::new();
@@ -133,7 +133,7 @@ impl RaplReader {
                         u64::MAX
                     },
                     ErrorKind::PermissionDenied => {
-                        // This is a user error. Warn them!
+                        // This is a user error.
                         eprintln!("Warning: Permission denied for '{}'. Run as root for accurate overflow handling.", max_path.display());
                         u64::MAX
                     },
@@ -168,8 +168,6 @@ impl RaplReader {
         for domain in &self.domains {
             let energy_str = fs::read_to_string(&domain.path)?;
 
-            // let energy_str = fs::read_to_string(&domain.path)
-                // .with_context(|| format!("Failed to read RAPL energy from '{:?}'", domain.path))?;
             let energy_uj = energy_str.trim().parse::<u64>()
                 .with_context(|| format!("Failed to parse energy uj '{}'", energy_str))?;
 
