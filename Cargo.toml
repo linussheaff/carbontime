@@ -3,7 +3,16 @@ name = "carbontime"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "carbontime"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "carbontime-cli"
+path = "src/main.rs"
+
 [dependencies]
+pyo3 = { version = "0.27", features = ["extension-module"] }
 clap = { version = "4.0", features = ["derive"] }
 anyhow = "1.0"
 nvml-wrapper = "0.10.0"
